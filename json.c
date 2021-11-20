@@ -118,13 +118,19 @@ static int json_parseString(char *str, size_t str_len) {
                     break;
                 }
                 case 'u': { // Allows escaped symbol \uXXXX
+                    int uc = 0, hex_val = 0;
                     for (int i = 0; i < 4 && ++parser.pos < str_len && str[parser.pos] != '\0'; i++) {
                         // If it isn't a hex character we have an error
-                        if (isxdigit(str[parser.pos]) < 0) {
+                        if (atoh(str[parser.pos], &hex_val) < 0) {
                             return JSON_SYNTAX_ERROR;
                         }
+                        uc += hex_val << (12 - i * 4);
                     }
-                    s += 5;
+                    unsigned char dest[4] = {0, 0, 0, 0};
+                    int nc = uc_to_utf8(uc, dest);
+                    for (int i = 0; i < nc; i++, s++) {
+                        sprintf(s, "%c", dest[i]);
+                    }
                     break;
                 }
                 default: // Unexpected symbol

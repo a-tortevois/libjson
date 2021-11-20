@@ -58,4 +58,35 @@ static int atoh(const char c, int *i) {
     return -1;
 }
 
+/** Unicode to UTF-8 char encoder */
+static uc_to_utf8(int uc, unsigned char *dest) {
+    if (uc < 0x00) {
+        return 0;
+    }
+    if (uc < 0x80) {
+        dest[0] = (unsigned char) uc;
+        return 1;
+    }
+    if (uc < 0x800) {
+        dest[0] = (unsigned char) (0xC0 + (uc >> 6));
+        dest[1] = (unsigned char) (0x80 + (uc & 0x3F));
+        return 2;
+    }
+    // Note: we allow encoding 0xd800-0xdfff here, so as not to change the API, however, these are actually invalid in UTF-8
+    if (uc < 0x10000) {
+        dest[0] = (unsigned char) (0xE0 + (uc >> 12));
+        dest[1] = (unsigned char) (0x80 + ((uc >> 6) & 0x3F));
+        dest[2] = (unsigned char) (0x80 + (uc & 0x3F));
+        return 3;
+    }
+    if (uc < 0x110000) {
+        dest[0] = (unsigned char) (0xF0 + (uc >> 18));
+        dest[1] = (unsigned char) (0x80 + ((uc >> 12) & 0x3F));
+        dest[2] = (unsigned char) (0x80 + ((uc >> 6) & 0x3F));
+        dest[3] = (unsigned char) (0x80 + (uc & 0x3F));
+        return 4;
+    }
+    return 0;
+}
+
 #endif //LIB_H

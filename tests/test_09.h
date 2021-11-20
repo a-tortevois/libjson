@@ -26,7 +26,7 @@ static void test_09(void) {
     assert("[1].type == JSON_STRING: ", json_data_stack[1].type == JSON_STRING);
     assert("[1].parent == &[0]: ", json_data_stack[1].parent == &json_data_stack[0]);
     assert("[1].next == NULL: ", json_data_stack[1].next == NULL);
-    assert("[1].value == \"\u25BA\": ", strcmp(json_data_stack[1].value, "\\u25BA") == 0);
+    assert("[1].value == \"\u25BA\": ", strcmp(json_data_stack[1].value, "\u25BA") == 0);
 
     printf("\n Result:\n");
     json_object *elem_key = json_get(parsed, "key");
