@@ -153,7 +153,7 @@ static int json_parseNumber(char *str, size_t str_len) {
     }
     for (; parser.pos < str_len && str[parser.pos] != '\0'; parser.pos++) {
         char c = str[parser.pos];
-        if ((&str[parser.pos] - ptr) > 10) {
+        if ((&str[parser.pos] - ptr) > 11) {
             return JSON_SYNTAX_ERROR;
         }
         if (c == ',' || c == ']' || c == '}') {

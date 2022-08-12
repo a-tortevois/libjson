@@ -17,6 +17,7 @@
 #include "test_14.h"
 #include "test_15.h"
 #include "test_16.h"
+#include "test_17.h"
 
 int main(void) {
     test_01();
@@ -35,4 +36,5 @@ int main(void) {
     test_14();
     test_15();
     test_16();
+    test_17();
 }
